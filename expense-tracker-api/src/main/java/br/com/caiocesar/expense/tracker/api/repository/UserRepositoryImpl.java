@@ -11,8 +11,8 @@ import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
 import br.com.caiocesar.expense.tracker.api.domain.User;
-import br.com.caiocesar.expense.tracker.api.exception.NotFoundExpcetion;
 import br.com.caiocesar.expense.tracker.api.exceptions.AuthorizationException;
+import br.com.caiocesar.expense.tracker.api.exceptions.NotFoundExpcetion;
 import br.com.statix.util.util.Criptografia;
 
 @Repository

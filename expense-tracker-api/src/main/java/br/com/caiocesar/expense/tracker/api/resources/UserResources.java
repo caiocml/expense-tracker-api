@@ -13,8 +13,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.com.caiocesar.expense.tracker.api.Constants;
+import br.com.caiocesar.expense.tracker.api.domain.Token;
 import br.com.caiocesar.expense.tracker.api.domain.User;
-import br.com.caiocesar.expense.tracker.api.domains.Token;
 import br.com.caiocesar.expense.tracker.api.services.UserService;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
