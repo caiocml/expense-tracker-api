@@ -15,7 +15,7 @@ public interface CategoryRepository {
 	 
 	 Category create(Integer userId, String title, String description) throws BusinessException;
 	 
-	 void update(Integer userId, Integer categoryId, Category category) throws NotFoundException;
+	 Category update(Integer userId, Integer categoryId, Category category) throws NotFoundException;
 	 
 	 void removeById(Integer userId, Integer categoryID);
 }

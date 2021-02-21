@@ -32,6 +32,15 @@ public class Category {
 	@Formula("(select coalesce(sum(t.amount), 0.0) from et_categories right outer join et_transactions t on et_categories.category_id = t.category_id)")
 	private Double totalExpense;
 
+	public Category(String title, String description) {
+		this.title = title;
+		this.description = description;
+	}
+	
+	public Category() {
+		
+	}
+
 	public Integer getCategoryId() {
 		return categoryId;
 	}

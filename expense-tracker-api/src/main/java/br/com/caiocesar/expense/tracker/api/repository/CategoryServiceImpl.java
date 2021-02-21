@@ -19,8 +19,7 @@ public class CategoryServiceImpl implements CategoryService {
 
 	@Override
 	public List<Category> listAllCategorires(Integer userId) {
-		// TODO Auto-generated method stub
-		return null;
+		return categoryRepository.findAll(userId);
 	}
 
 	@Override
@@ -34,9 +33,8 @@ public class CategoryServiceImpl implements CategoryService {
 	}
 
 	@Override
-	public void updateCategory(Integer userId, Integer categoryId, Category category) throws BusinessException {
-		// TODO Auto-generated method stub
-
+	public Category updateCategory(Integer userId, Integer categoryId, Category category) throws BusinessException {
+		return categoryRepository.update(userId, categoryId, category);
 	}
 
 	@Override
