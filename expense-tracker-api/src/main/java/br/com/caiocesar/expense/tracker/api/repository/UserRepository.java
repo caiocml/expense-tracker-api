@@ -1,10 +1,9 @@
 package br.com.caiocesar.expense.tracker.api.repository;
 
-import java.util.Optional;
-
 import br.com.caiocesar.expense.tracker.api.domain.User;
 import br.com.caiocesar.expense.tracker.api.exceptions.AuthorizationException;
-import br.com.caiocesar.expense.tracker.api.exceptions.BusinessExeption;
+import br.com.caiocesar.expense.tracker.api.exceptions.BusinessException;
+import br.com.caiocesar.expense.tracker.api.exceptions.NotFoundException;
 
 public interface UserRepository {
 	
@@ -14,8 +13,8 @@ public interface UserRepository {
 	
 	Integer getCountByEmail(String email);
 	
-	Optional<User> findById(Integer id);
+	User findById(Integer id)throws NotFoundException;
 	
-	User alterUser(User user)throws AuthorizationException, BusinessExeption;
+	User alterUser(User user)throws AuthorizationException, BusinessException;
 
 }

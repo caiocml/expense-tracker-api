@@ -7,15 +7,23 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Repository;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
+
 import br.com.caiocesar.expense.tracker.api.Constants;
+import br.com.caiocesar.expense.tracker.api.domain.Category;
 import br.com.caiocesar.expense.tracker.api.domain.Token;
 import br.com.caiocesar.expense.tracker.api.domain.User;
+import br.com.caiocesar.expense.tracker.api.repository.CategoryService;
 import br.com.caiocesar.expense.tracker.api.services.UserService;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -26,7 +34,7 @@ public class UserResources {
 	
 	@Autowired
 	UserService userService;
-	
+		
 	@PostMapping("/login")
 	public ResponseEntity<Map<String, String>> login(@RequestBody Map<String,String> body){
 		
@@ -88,4 +96,7 @@ public class UserResources {
 	
 		return new Token(token);
 	}
+	
+	
+
 }
