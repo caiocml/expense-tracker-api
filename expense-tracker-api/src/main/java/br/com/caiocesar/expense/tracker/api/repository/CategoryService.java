@@ -14,7 +14,7 @@ public interface CategoryService {
 	
 	Category addCategory(Integer userId, String title, String description) throws BusinessException;
 
-	void updateCategory(Integer userId, Integer categoryId, Category category) throws BusinessException;
+	Category updateCategory(Integer userId, Integer categoryId, Category category) throws BusinessException;
 	
 	void removeCategoryWithAllTransactions(Integer userId, Integer categoryId) throws NotFoundException;
 }

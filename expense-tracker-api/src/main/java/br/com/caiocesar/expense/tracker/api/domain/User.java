@@ -23,6 +23,7 @@ public class User {
 	private String email;
 	
 	private String password;
+
 	
 	public User() {
 		
@@ -82,7 +83,7 @@ public class User {
 	public void setPassword(String password) {
 		this.password = Criptografia.criptografar(password);
 	}
-	
+
 	
 
 }
