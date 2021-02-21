@@ -8,7 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import br.com.caiocesar.expense.tracker.api.domain.User;
 import br.com.caiocesar.expense.tracker.api.exceptions.AuthorizationException;
-import br.com.caiocesar.expense.tracker.api.exceptions.BusinessExeption;
+import br.com.caiocesar.expense.tracker.api.exceptions.BusinessException;
 import br.com.caiocesar.expense.tracker.api.repository.UserRepository;
 
 @Service
@@ -33,29 +33,29 @@ public class UserServiceImpl implements UserService {
 		Pattern pattern = Pattern.compile("^(.+)@(.+)$");
 		if(email != null) email = email.toLowerCase();
 		if(!pattern.matcher(email).matches())
-			throw new BusinessExeption("invalid email format");
+			throw new BusinessException("invalid email format");
 		Integer count = userRepository.getCountByEmail(email);
 		if(count > 0)
-			throw new BusinessExeption("email already in use");
+			throw new BusinessException("email already in use");
 		
 		Integer userId = userRepository.createUser(firstName, lastName, email, password);
 		
-		return userRepository.findById(userId).get();
+		return userRepository.findById(userId);
 	}
 
 
 	@Override
 	public User alterUserPassword(String email, String password, String newPassword, String newPasswordConfirmation)
-			throws AuthorizationException, BusinessExeption {
+			throws AuthorizationException, BusinessException {
 		
 		if(email == null || password == null)
 			throw new AuthorizationException("invalid email or password!");
 		
 		if(newPassword == null || newPasswordConfirmation == null)
-			throw new BusinessExeption("invalid new password! ");
+			throw new BusinessException("invalid new password! ");
 				
 		if (newPassword.isEmpty() || newPassword.isEmpty())
-			throw new BusinessExeption("invalid new password!");
+			throw new BusinessException("invalid new password!");
 	
 		if (newPassword.equals(newPasswordConfirmation)) {
 
@@ -67,7 +67,7 @@ public class UserServiceImpl implements UserService {
 			return user;
 
 		}else {
-			throw new BusinessExeption("new password and confirmation must be the same!");
+			throw new BusinessException("new password and confirmation must be the same!");
 		}
 	}
 

@@ -9,8 +9,8 @@ import org.springframework.stereotype.Repository;
 
 import br.com.caiocesar.expense.tracker.api.domain.User;
 import br.com.caiocesar.expense.tracker.api.exceptions.AuthorizationException;
-import br.com.caiocesar.expense.tracker.api.exceptions.BusinessExeption;
-import br.com.caiocesar.expense.tracker.api.exceptions.NotFoundExpcetion;
+import br.com.caiocesar.expense.tracker.api.exceptions.BusinessException;
+import br.com.caiocesar.expense.tracker.api.exceptions.NotFoundException;
 import br.com.statix.util.util.Criptografia;
 
 @Repository
@@ -30,7 +30,7 @@ public class UserRepositoryImpl implements UserRepository{
 	
 	@Autowired
 	UserCrud userCrud;
-
+	
 //	@Deprecated
 //	@Override
 //	public Integer createUser(String firstName, String lastName, String email, String password) throws AuthorizationException {
@@ -65,7 +65,7 @@ public class UserRepositoryImpl implements UserRepository{
 			
 			Integer userId = jdbcTemplate.queryForObject(SQL_FIND_BY_EMAIL, new Object[] {email}, Integer.class);
 			if (userId == null)
-				throw new NotFoundExpcetion("User not found");
+				throw new NotFoundException("User not found");
 			
 			else {
 				User user = userCrud.findById(userId).get();
@@ -88,9 +88,15 @@ public class UserRepositoryImpl implements UserRepository{
 	}
 
 	@Override
-	public Optional<User> findById(Integer id) {
+	public User findById(Integer id) {
 		//return jdbcTemplate.queryForObject(SQL_FIND_BY_ID, new Object[] {id}, userRowMapper);
-		return userCrud.findById(id);
+		
+		Optional<User> user = userCrud.findById(id);
+		
+		if(user.isPresent())
+			return user.get();
+		
+		throw new NotFoundException("user with id: " + id + " not found!");
 	}
 	
 	private RowMapper<User> userRowMapper = ((rs, rowNum) -> {
@@ -112,9 +118,9 @@ public class UserRepositoryImpl implements UserRepository{
 	}
 
 	@Override
-	public User alterUser(User user) throws AuthorizationException, BusinessExeption {
+	public User alterUser(User user) throws AuthorizationException, BusinessException {
 		
-		if(user.getUserId() == null) throw new BusinessExeption("must provide a ID for alter USER");
+		if(user.getUserId() == null) throw new BusinessException("must provide a ID for alter USER");
 		
 		userCrud.save(user);
 		

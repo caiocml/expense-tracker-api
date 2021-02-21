@@ -4,9 +4,14 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 @ResponseStatus(HttpStatus.NOT_ACCEPTABLE)
-public class BusinessExeption extends RuntimeException {
+public class BusinessException extends RuntimeException {
 	
-	public BusinessExeption(String message) {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 2649685755385869374L;
+
+	public BusinessException(String message) {
 		super(message);
 	}
 
