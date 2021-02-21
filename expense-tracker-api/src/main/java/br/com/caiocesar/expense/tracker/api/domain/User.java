@@ -1,6 +1,19 @@
 package br.com.caiocesar.expense.tracker.api.domain;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+import br.com.statix.util.util.Criptografia;
+
+@Entity
+@Table(name = "et_users")
 public class User {
+	
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer userId;
 	
 	private String firstName;
@@ -20,14 +33,14 @@ public class User {
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.email = email;
-		this.password = password;
+		setPassword(password);
 	}
 	
 	public User(String firstName, String lastName, String email, String password) {
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.email = email;
-		this.password = password;
+		setPassword(password);
 	}
 
 	public Integer getUserId() {
@@ -67,7 +80,7 @@ public class User {
 	}
 
 	public void setPassword(String password) {
-		this.password = password;
+		this.password = Criptografia.criptografar(password);
 	}
 	
 	

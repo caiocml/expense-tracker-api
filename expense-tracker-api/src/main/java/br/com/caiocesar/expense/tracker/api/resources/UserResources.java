@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -27,8 +28,12 @@ public class UserResources {
 	UserService userService;
 	
 	@PostMapping("/login")
-	public ResponseEntity<Map<String, String>> login(@RequestBody User body){
-		User user = userService.validateUser(body.getEmail(), body.getPassword());
+	public ResponseEntity<Map<String, String>> login(@RequestBody Map<String,String> body){
+		
+		String email = body.get("email");
+		String password = body.get("password");
+		
+		User user = userService.validateUser(email, password);
 		Map<String,String> map = new HashMap<>();
 		map.put("message","login sucessfull");
 		map.put("token", getUserToken(user));
@@ -36,10 +41,29 @@ public class UserResources {
 		return new ResponseEntity<Map<String,String>>(map, HttpStatus.OK);
 		
 	}
+	
+	@PutMapping("/alterPassword")
+	public ResponseEntity<Map<String, String>> alterUser(@RequestBody Map<String,String> body){
+		
+		Map<String, String> map = new HashMap<String, String>();
+		
+		String email = body.get("email");
+		String password = body.get("password");
+		String newPassword = body.get("newPassword");
+		String newPasswordConfirmation = body.get("newPasswordConfirmation");
+		
+		User user = userService.alterUserPassword(email, password, newPassword, newPasswordConfirmation);
+		
+		map.put("message", "password Changed for user: " + user.getEmail());
+		
+		return new ResponseEntity<Map<String,String>>(map, HttpStatus.ACCEPTED);
+	}
 
 	@PostMapping("/register")
-	public ResponseEntity<Map<String, String>> registerUser(@RequestBody User bodyRequest) {		
-		User user = userService.registerUser(bodyRequest.getFirstName(), bodyRequest.getLastName(), bodyRequest.getEmail(), bodyRequest.getPassword());
+	public ResponseEntity<Map<String, String>> registerUser(@RequestBody Map<String, String> bodyRequest) {		
+		
+		
+		User user = userService.registerUser(bodyRequest.get("firstName"), bodyRequest.get("lastName"), bodyRequest.get("email"), bodyRequest.get("password"));
 		
 		Map<String, String> map = new HashMap<>();
 		map.put("sucess", "user created sucesful!");
