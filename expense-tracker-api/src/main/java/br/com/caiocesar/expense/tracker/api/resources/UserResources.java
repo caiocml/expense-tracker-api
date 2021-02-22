@@ -69,8 +69,6 @@ public class UserResources {
 
 	@PostMapping("/register")
 	public ResponseEntity<Map<String, String>> registerUser(@RequestBody Map<String, String> bodyRequest) {		
-		
-		
 		User user = userService.registerUser(bodyRequest.get("firstName"), bodyRequest.get("lastName"), bodyRequest.get("email"), bodyRequest.get("password"));
 		
 		Map<String, String> map = new HashMap<>();
