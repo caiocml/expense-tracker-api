@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+<title>Document</title>
+</head>
+
+<body>
+
+    <h2>Expense Tracker Test</h2>
+<script>
+
+fetch("http://localhost:8080/api/categories/",{
+   headers : { 
+       'Authorization' : 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE2MTM5NjExMjQsImV4cCI6MTYxMzk2ODMyNCwidXNlcklkIjo2LCJlbWFpbCI6ImNhaW9jZXNhc3JAc3RhdGl4LmNvbS5iciIsImZpcnROYW1lIjoiQ2FpbyBDw6lzYXIiLCJsYXN0TmFtZSI6ImRlIE1lbG8gTG9wZXMifQ.eWIstTYW0rS2_8MRhuB0KbAH50U5hyfyPpQ0k1y4Uko'
+   }
+}).then(response => response.json())
+.then(response => console.log(response))
+.catch(err => console.log(error));
+
+
+</script>
+
+</body>
+
+</html>
