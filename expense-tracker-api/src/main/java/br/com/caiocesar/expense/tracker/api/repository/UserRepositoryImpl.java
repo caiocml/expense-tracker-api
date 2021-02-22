@@ -7,6 +7,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
+import br.com.caiocesar.expense.tracker.api.crud.UserCrud;
 import br.com.caiocesar.expense.tracker.api.domain.User;
 import br.com.caiocesar.expense.tracker.api.exceptions.AuthorizationException;
 import br.com.caiocesar.expense.tracker.api.exceptions.BusinessException;

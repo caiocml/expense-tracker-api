@@ -5,11 +5,11 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
-import org.assertj.core.util.Arrays;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
+import br.com.caiocesar.expense.tracker.api.crud.CategoryCrud;
 import br.com.caiocesar.expense.tracker.api.domain.Category;
 import br.com.caiocesar.expense.tracker.api.domain.User;
 import br.com.caiocesar.expense.tracker.api.exceptions.BusinessException;
@@ -21,6 +21,8 @@ public class CategoryRepositoryImpl implements CategoryRepository {
 	
 	private static final String SQL_FIND_BY_TITLE = "SELECT ID FROM ET_CATEGORIES WHERE TITLE LIKE ?";
 	private static final String SQL_FIND_ALL = "SELECT DISTINCT CATEGORY_ID FROM ET_CATEGORIES WHERE USER_ID = ?";
+	private static final String SQL_DELETE_ALL_CATEGORY_TRANSACTIONS = "DELETE FROM ET_TRANSACTIONS WHERE USER_ID = ? AND CATEGORY_ID = ?";
+	private static final String SQL_DELETE_CATEGORY= "DELETE FROM ET_CATEGORIES WHERE USER_ID = ? AND CATEGORY_ID = ?";
 
 	
 	@Autowired
@@ -105,9 +107,15 @@ public class CategoryRepositoryImpl implements CategoryRepository {
 	}
 
 	@Override
-	public void removeById(Integer userId, Integer categoryID) {
-		// TODO Auto-generated method stub
-		
+	public void removeById(Integer userId, Integer categoryId) {
+		removeAllCategoryTransactions(userId, categoryId);
+		jdbcTemplate.update(SQL_DELETE_CATEGORY, new Object[] {userId, categoryId});
 	}
+
+	private void removeAllCategoryTransactions(Integer userId, Integer categoryId) {
+		jdbcTemplate.update(SQL_DELETE_ALL_CATEGORY_TRANSACTIONS, new Object[]{userId, categoryId});
+	}
+	
+	
 
 }

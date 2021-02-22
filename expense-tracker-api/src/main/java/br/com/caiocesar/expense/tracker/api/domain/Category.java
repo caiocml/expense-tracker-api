@@ -23,6 +23,9 @@ public class Category {
 	private String title;
 	
 	private String description;
+	
+	@Formula("(select count(*) from et_transactions t where t.category_id = category_id)")
+	private Integer totalTransactions;
 		
 //	@JsonIgnoreProperties({"hibernateLazyInitializer"})
 //	@OneToOne(fetch = FetchType.LAZY)
@@ -31,6 +34,10 @@ public class Category {
 	
 	@Formula("(select coalesce(sum(t.amount), 0.0) from et_categories right outer join et_transactions t on et_categories.category_id = t.category_id)")
 	private Double totalExpense;
+	
+	@Formula("(select coalesce(sum(t.amount), 0.0) from et_categories et left join et_transactions t on et.category_id = t.category_id "
+			+ "where et.category_id = category_id)")
+	private Double totalCategoryExpenses;
 
 	public Category(String title, String description) {
 		this.title = title;
@@ -79,6 +86,22 @@ public class Category {
 
 	public void setTotalExpense(Double totalExpense) {
 		this.totalExpense = totalExpense;
+	}
+
+	public Double getTotalCategoryExpenses() {
+		return totalCategoryExpenses;
+	}
+
+	public void setTotalCategoryExpenses(Double totalCategoryExpenses) {
+		this.totalCategoryExpenses = totalCategoryExpenses;
+	}
+
+	public Integer getTotalTransactions() {
+		return totalTransactions;
+	}
+
+	public void setTotalTransactions(Integer totalTransactions) {
+		this.totalTransactions = totalTransactions;
 	}
 
 //	public User getUserModel() {

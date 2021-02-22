@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -82,6 +83,18 @@ public class CategoryResource {
 		
 		
 		return new ResponseEntity<>(category, HttpStatus.ACCEPTED);
+	}
+	
+	@DeleteMapping("/{categoryId}")
+	public ResponseEntity<Map<String, Object>> deleteCategory(HttpServletRequest request,@PathVariable Integer categoryId){
+		Map<String, Object> map = new HashMap<>();
+		
+		User user = (User) request.getAttribute(AuthFilter.USER_CONTEXT);
+		
+		categoryService.removeCategoryWithAllTransactions(user.getUserId(), categoryId);
+		
+		map.put("success", true);
+		return new ResponseEntity<>(map, HttpStatus.ACCEPTED);
 	}
 	
 }

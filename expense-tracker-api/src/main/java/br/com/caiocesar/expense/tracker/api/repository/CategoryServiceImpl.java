@@ -39,7 +39,9 @@ public class CategoryServiceImpl implements CategoryService {
 
 	@Override
 	public void removeCategoryWithAllTransactions(Integer userId, Integer categoryId) throws NotFoundException {
-		// TODO Auto-generated method stub
+		categoryRepository.removeById(userId, categoryId);
+		
+		
 
 	}
 

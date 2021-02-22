@@ -1,4 +1,4 @@
-package br.com.caiocesar.expense.tracker.api.repository;
+package br.com.caiocesar.expense.tracker.api.crud;
 
 import org.springframework.data.repository.CrudRepository;
 
