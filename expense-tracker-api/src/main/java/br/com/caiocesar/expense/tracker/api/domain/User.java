@@ -6,7 +6,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-import br.com.statix.util.util.Criptografia;
+import br.com.caiocesar.expense.tracker.api.util.Crypto;
 
 @Entity
 @Table(name = "et_users")
@@ -81,7 +81,7 @@ public class User {
 	}
 
 	public void setPassword(String password) {
-		this.password = Criptografia.criptografar(password);
+		this.password = Crypto.encrypt(password);
 	}
 
 	
