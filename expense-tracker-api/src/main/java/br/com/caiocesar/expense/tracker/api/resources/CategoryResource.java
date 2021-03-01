@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 import br.com.caiocesar.expense.tracker.api.domain.Category;
 import br.com.caiocesar.expense.tracker.api.domain.User;
 import br.com.caiocesar.expense.tracker.api.filters.AuthFilter;
+import br.com.caiocesar.expense.tracker.api.projections.DescriptionCategoryOnly;
 import br.com.caiocesar.expense.tracker.api.repository.CategoryService;
 
 @RestController
@@ -95,6 +96,14 @@ public class CategoryResource {
 		
 		map.put("success", true);
 		return new ResponseEntity<>(map, HttpStatus.ACCEPTED);
+	}
+	
+	@GetMapping("/name/{title}")
+	public ResponseEntity<List<DescriptionCategoryOnly>> findCategoriesByTitle(HttpServletRequest request, @PathVariable String title){
+		
+		//User user = (User) request.getAttribute(AuthFilter.USER_CONTEXT);
+		
+		return new ResponseEntity<List<DescriptionCategoryOnly>>(categoryService.findByDescriptionLike(title), HttpStatus.OK);
 	}
 	
 }

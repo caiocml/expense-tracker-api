@@ -1,12 +1,9 @@
 package br.com.caiocesar.expense.tracker.api.repository;
 
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import br.com.caiocesar.expense.tracker.api.crud.CategoryCrud;
@@ -14,6 +11,7 @@ import br.com.caiocesar.expense.tracker.api.domain.Category;
 import br.com.caiocesar.expense.tracker.api.domain.User;
 import br.com.caiocesar.expense.tracker.api.exceptions.BusinessException;
 import br.com.caiocesar.expense.tracker.api.exceptions.NotFoundException;
+import br.com.caiocesar.expense.tracker.api.projections.DescriptionCategoryOnly;
 
 
 @Repository
@@ -32,8 +30,8 @@ public class CategoryRepositoryImpl implements CategoryRepository {
 	UserRepository userRepository;
 	
 	@Autowired
-	JdbcTemplate jdbcTemplate;
-
+	TransactionRepository transactionRepository;
+	
 	@Override
 	public Category findById(Integer id) {
 		Optional<Category> category = categoryCrud.findById(id);
@@ -49,11 +47,15 @@ public class CategoryRepositoryImpl implements CategoryRepository {
 		
 		try {
 			
-			List<Integer> ids = jdbcTemplate.queryForList(SQL_FIND_ALL, new Object[]{userId}, Integer.class);
+//			List<Integer> ids = jdbcTemplate.queryForList(SQL_FIND_ALL, new Object[]{userId}, Integer.class);
+//			
+//			if(ids != null) {
+//				return new ArrayList<Category>((Collection<? extends Category>) categoryCrud.findAllById(ids));
 			
-			if(ids != null) {
-				return new ArrayList<Category>((Collection<? extends Category>) categoryCrud.findAllById(ids));
-			}
+			
+		//	}
+			
+			return categoryCrud.findByUserId(userId);
 			
 		}catch(Exception e){
 		
@@ -108,14 +110,31 @@ public class CategoryRepositoryImpl implements CategoryRepository {
 
 	@Override
 	public void removeById(Integer userId, Integer categoryId) {
+		//removeAllCategoryTransactions(userId, categoryId);
+		//jdbcTemplate.update(SQL_DELETE_CATEGORY, new Object[] {userId, categoryId});
 		removeAllCategoryTransactions(userId, categoryId);
-		jdbcTemplate.update(SQL_DELETE_CATEGORY, new Object[] {userId, categoryId});
+		categoryCrud.deleteByUserIdAndCategoryId(userId, categoryId);
 	}
 
 	private void removeAllCategoryTransactions(Integer userId, Integer categoryId) {
-		jdbcTemplate.update(SQL_DELETE_ALL_CATEGORY_TRANSACTIONS, new Object[]{userId, categoryId});
+		//jdbcTemplate.update(SQL_DELETE_ALL_CATEGORY_TRANSACTIONS, new Object[]{userId, categoryId});
+		transactionRepository.deleteByUserIdAndCategoryId(userId, categoryId);
+	}
+
+	@Override
+	public List<Category> findByTitle(String title) {
+		return categoryCrud.findByTitle(title);
 	}
 	
+	@Override
+	public List<DescriptionCategoryOnly> findByDescriptionLike(String description){
+		return categoryCrud.findByDescriptionStartingWith(description);
+	}
+
+	@Override
+	public Category findByIdAndUserId(Integer categoryId, Integer userId) {
+		return categoryCrud.findByCategoryIdAndUserId(categoryId, userId);
+	}
 	
 
 }

@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 import br.com.caiocesar.expense.tracker.api.domain.Category;
 import br.com.caiocesar.expense.tracker.api.exceptions.BusinessException;
 import br.com.caiocesar.expense.tracker.api.exceptions.NotFoundException;
+import br.com.caiocesar.expense.tracker.api.projections.DescriptionCategoryOnly;
 
 @Service
 @Transactional
@@ -43,6 +44,21 @@ public class CategoryServiceImpl implements CategoryService {
 		
 		
 
+	}
+
+	@Override
+	public List<Category> fethCategoriesByTitle(String title) {
+		return categoryRepository.findByTitle(title);
+	}
+
+	@Override
+	public List<DescriptionCategoryOnly> findByDescriptionLike(String description) {
+		return categoryRepository.findByDescriptionLike(description);
+	}
+
+	@Override
+	public Category findByIdAndUserId(Integer categoryId, Integer userId) {
+		return categoryRepository.findByIdAndUserId(categoryId, userId);
 	}
 
 }

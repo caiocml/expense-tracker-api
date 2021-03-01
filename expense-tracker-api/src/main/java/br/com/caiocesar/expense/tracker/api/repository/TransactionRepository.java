@@ -18,5 +18,7 @@ public interface TransactionRepository {
 	Transaction updateTransaction(Integer userId, Integer transactionId, Integer categoryId, Transaction newTransaction) throws NotFoundException;
 	
 	void delete(Transaction transactionId) throws NotFoundException;
+	
+	void deleteByUserIdAndCategoryId(Integer userId, Integer categoryId);
 
 }
