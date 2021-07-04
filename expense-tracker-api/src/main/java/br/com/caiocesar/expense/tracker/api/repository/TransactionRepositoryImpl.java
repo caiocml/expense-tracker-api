@@ -6,6 +6,12 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
+import org.springframework.data.domain.Example;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Repository;
 
 import br.com.caiocesar.expense.tracker.api.crud.TransactionCrud;
@@ -13,6 +19,7 @@ import br.com.caiocesar.expense.tracker.api.domain.Category;
 import br.com.caiocesar.expense.tracker.api.domain.Transaction;
 import br.com.caiocesar.expense.tracker.api.exceptions.BusinessException;
 import br.com.caiocesar.expense.tracker.api.exceptions.NotFoundException;
+import br.com.caiocesar.expense.tracker.api.projections.TransactionRelatory;
 
 @Repository
 public class TransactionRepositoryImpl implements TransactionRepository{
@@ -33,15 +40,7 @@ public class TransactionRepositoryImpl implements TransactionRepository{
 
 	@Override
 	public List<Transaction> fetchAllTransactions(Integer userId, Integer categoryId) {
-		
-//		List<Integer> ids = jdbcTemplate.queryForList(SQL_ALL_USER_TRANSACTIONS_CATEGORY, new Object[]{userId, categoryId}, Integer.class);
-//		
-//		if(ids != null)
-//			return (List<Transaction>) transactionCrud.findAllById(ids);
-		
 		return transactionCrud.findByUserIdAndCategoryId(userId, categoryId);
-
-		//throw new NotFoundException("not found any transaciton");
 	}
 
 	@Override
@@ -91,6 +90,22 @@ public class TransactionRepositoryImpl implements TransactionRepository{
 	@Override
 	public void deleteByUserIdAndCategoryId(Integer userId, Integer categoryId) {
 		transactionCrud.deleteByUserIdAndCategoryId(userId, categoryId);
+	}
+
+	@Override
+	public Transaction save(Transaction transaction) {
+		return transactionCrud.save(transaction);
+	}
+
+	@Override
+	public Page<Transaction> findAll(Example<Transaction> sample, Pageable page) {
+		return transactionCrud.findAll(sample, page);
+	}
+	
+	@Override
+	public Page<TransactionRelatory> transactionRelatory(Integer size, Integer page, Integer userId){
+		Pageable pageable = PageRequest.of(page - 1, size, Sort.by(Direction.ASC, new String[]{"transactionId"}));
+		return transactionCrud.relatory(userId, pageable);
 	}
 
 }

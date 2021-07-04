@@ -25,11 +25,12 @@ import br.com.caiocesar.expense.tracker.api.domain.Token;
 import br.com.caiocesar.expense.tracker.api.domain.User;
 import br.com.caiocesar.expense.tracker.api.repository.CategoryService;
 import br.com.caiocesar.expense.tracker.api.services.UserService;
+import br.com.caiocesar.expense.tracker.api.util.Crypto;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 
 @RestController
-@RequestMapping("/api/users")
+@RequestMapping("/users")
 public class UserResources {
 	
 	@Autowired
@@ -90,10 +91,13 @@ public class UserResources {
 				.claim("email", user.getEmail())
 				.claim("firtName", user.getFirstName())
 				.claim("lastName", user.getLastName())
+				.claim("serverToken", user.getUniqueHash())
 				.compact();
 	
 		return new Token(token);
 	}
+
+	
 	
 	
 

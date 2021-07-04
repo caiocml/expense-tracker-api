@@ -47,6 +47,14 @@ public class Crypto {
 		return null;
 
 	}
+	
+	public static String encrypt(String pwd, int times) {
+		String aux = pwd;
+		for (int i = 1; i <= times; i++) {
+			aux = encrypt(aux);
+		}
+		return aux;
+	}
 
 }
 

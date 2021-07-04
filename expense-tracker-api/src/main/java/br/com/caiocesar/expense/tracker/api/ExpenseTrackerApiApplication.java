@@ -12,6 +12,7 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;
 import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
@@ -24,6 +25,7 @@ import br.com.caiocesar.expense.tracker.api.repository.UserRepository;
 public class ExpenseTrackerApiApplication {
 
 	public static void main(String[] args) {
+	    System.setProperty("server.servlet.context-path", "/api");
 		SpringApplication.run(ExpenseTrackerApiApplication.class, args);
 		System.out.println("Aplication Started");
 	}
@@ -37,7 +39,11 @@ public class ExpenseTrackerApiApplication {
 		FilterRegistrationBean<AuthFilter> registrationBean = new FilterRegistrationBean<AuthFilter>();
 		AuthFilter auth = new AuthFilter(userRepository);
 		registrationBean.setFilter(auth);
-		registrationBean.addUrlPatterns("/api/categories/*");
+		registrationBean.addUrlPatterns("/categories/*");
+		registrationBean.addUrlPatterns("/transactions/*");
+		registrationBean.addUrlPatterns("/paymentType/*");
+		registrationBean.addUrlPatterns("/users/alterPassword");
+
 		return registrationBean;
 		
 	}
@@ -76,6 +82,9 @@ public class ExpenseTrackerApiApplication {
 			builder.serializers(new LocalDateTimeSerializer(DateTimeFormatter.ofPattern(dateTimeFormat)));
 			builder.deserializers(new LocalDateDeserializer(DateTimeFormatter.ofPattern(dateFormat)));
 			builder.deserializers(new LocalDateTimeDeserializer(DateTimeFormatter.ofPattern(dateTimeFormat)));
+			
+			builder.serializationInclusion(JsonInclude.Include.NON_NULL);
+			
 		};
 	}
 

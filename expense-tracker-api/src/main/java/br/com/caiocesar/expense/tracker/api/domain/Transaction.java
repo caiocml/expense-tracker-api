@@ -1,13 +1,20 @@
 package br.com.caiocesar.expense.tracker.api.domain;
 
 import java.time.LocalDateTime;
-import java.util.Date;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+
+import br.com.caiocesar.expense.tracker.api.payment.InvoiceType;
 
 @Entity
 @Table(name = "et_transactions")
@@ -19,13 +26,44 @@ public class Transaction {
 	
 	private Integer userId;
 	
+	@Column(name = "category_id")
 	private Integer categoryId;
+	
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "category_id",updatable = false, insertable = false)
+	private Category category;
 	
 	private Double amount;
 	
 	private String note;
 	
 	private LocalDateTime transactionDate;
+	
+	@Column(name = "payment_type_id")
+	private Integer paymentTypeId;
+	
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "payment_type_id", insertable = false, updatable = false)
+	private PaymentType paymentType;
+	
+	public Category getCategory() {
+		return category;
+	}
+
+	public void setCategory(Category category) {
+		this.category = category;
+	}
+
+	public PaymentType getPaymentType() {
+		return paymentType;
+	}
+
+	public void setPaymentType(PaymentType paymentType) {
+		this.paymentType = paymentType;
+	}
+
+	@Enumerated(EnumType.STRING)
+	private InvoiceType invoiceType;
 
 	public Transaction() {
 		
@@ -86,8 +124,24 @@ public class Transaction {
 	public void setTransactionDate(LocalDateTime transactionDate) {
 		this.transactionDate = transactionDate;
 	}
-	
-	
+
+	public Integer getPaymentTypeId() {
+		return paymentTypeId;
+	}
+
+	public void setPaymentTypeId(Integer paymentTypeId) {
+		this.paymentTypeId = paymentTypeId;
+	}
+
+	public InvoiceType getInvoiceType() {
+		return invoiceType;
+	}
+
+	public void setInvoiceType(InvoiceType invoiceType) {
+		this.invoiceType = invoiceType;
+	}
+
+
 	
 	
 
