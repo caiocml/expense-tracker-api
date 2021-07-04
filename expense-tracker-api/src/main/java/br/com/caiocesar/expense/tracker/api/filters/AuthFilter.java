@@ -9,12 +9,14 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.filter.GenericFilterBean;
 
 import br.com.caiocesar.expense.tracker.api.Constants;
+import br.com.caiocesar.expense.tracker.api.domain.User;
+import br.com.caiocesar.expense.tracker.api.exceptions.AuthorizationException;
 import br.com.caiocesar.expense.tracker.api.repository.UserRepository;
+import br.com.caiocesar.expense.tracker.api.util.Crypto;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 
@@ -48,7 +50,9 @@ public class AuthFilter extends GenericFilterBean{
 
 					Integer id = Integer.parseInt(claim.get("userId").toString());
 
-					httpRequest.setAttribute(USER_CONTEXT, userRepository.findById(id));
+					User user = userRepository.findById(id);
+					httpRequest.setAttribute(USER_CONTEXT, user);
+					validateServerToken(user, claim);
 
 				} catch (Exception e) {
 					httpResponse.sendError(HttpStatus.FORBIDDEN.value(), "invalid or expired token");
@@ -63,6 +67,16 @@ public class AuthFilter extends GenericFilterBean{
 			return;
 		}
 		filterChain.doFilter(httpRequest, httpResponse);
+	}
+
+	private void validateServerToken(User user, Claims claim) {
+		String serverTokenFromJWT = claim.get("serverToken").toString();
+		String actualServerToken = user.getUniqueHash();
+		if(serverTokenFromJWT.equals(actualServerToken)) {
+			return;
+		}
+		
+		throw new AuthorizationException("invalid Bearer token");
 	}
 
 }
