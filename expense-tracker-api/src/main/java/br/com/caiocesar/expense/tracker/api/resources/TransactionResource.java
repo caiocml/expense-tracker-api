@@ -1,5 +1,6 @@
 package br.com.caiocesar.expense.tracker.api.resources;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -8,14 +9,17 @@ import java.util.Map;
 import java.util.Optional;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 import javax.websocket.server.PathParam;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -31,8 +35,9 @@ import br.com.caiocesar.expense.tracker.api.dto.PaymentTypeDTO;
 import br.com.caiocesar.expense.tracker.api.dto.TransactionDTO;
 import br.com.caiocesar.expense.tracker.api.filters.AuthFilter;
 import br.com.caiocesar.expense.tracker.api.projections.TransactionRelatory;
+import br.com.caiocesar.expense.tracker.api.requests.AlterTransactionRequest;
 import br.com.caiocesar.expense.tracker.api.responses.TransactionDTOResponse;
-import br.com.caiocesar.expense.tracker.api.responses.TransactionRelatoryResponse;
+import br.com.caiocesar.expense.tracker.api.responses.TransactionRelatoryPaginationResponse;
 import br.com.caiocesar.expense.tracker.api.services.TransactionService;
 
 @RestController
@@ -65,13 +70,6 @@ public class TransactionResource extends GenericResource{
 		return new ResponseEntity<>(transactionDTO, HttpStatus.CREATED);
 	}
 	
-//	@GetMapping("/{transactionId}")
-//	public ResponseEntity<Transaction> getTransaction(@PathVariable Integer transactionId) {
-//		User user = getSessionUser();
-//		
-//		return new ResponseEntity<Transaction>(transactionService.fetchTransactionById(user.getUserId(), transactionId), HttpStatus.OK);
-//	}
-	
 	@GetMapping("{categoryId}")
 	public ResponseEntity<List<TransactionDTO>> allUserCategoryTransactions(HttpServletRequest request,
 			@PathVariable Integer categoryId){
@@ -86,12 +84,12 @@ public class TransactionResource extends GenericResource{
 	}
 	
 	@GetMapping("/relatory")
-	public ResponseEntity<TransactionRelatoryResponse> getTransactionRelatoryOfUser(@PathParam("size") Integer size, @PathParam("page") Integer page){
+	public ResponseEntity<TransactionRelatoryPaginationResponse> getTransactionRelatoryOfUser(@PathParam("size") Integer size, @PathParam("page") Integer page){
 		User user = getSessionUser();
 
 		Page<TransactionRelatory> relatory = transactionService.relatory(size, page, user.getUserId());
-		var response = new TransactionRelatoryResponse(relatory);
-		return new ResponseEntity<TransactionRelatoryResponse>(response, HttpStatus.OK);
+		var response = new TransactionRelatoryPaginationResponse(relatory);
+		return new ResponseEntity<TransactionRelatoryPaginationResponse>(response, HttpStatus.OK);
 	}
 	
 	private void copyListProperties(List<Transaction> list, List<TransactionDTO> dtoList) {
@@ -100,17 +98,22 @@ public class TransactionResource extends GenericResource{
 		}));
 	}
 
-	@PutMapping("{transactionId}")
-	public ResponseEntity<Map<String, Object>> alterTransaction(@PathVariable Integer categoryId, 
-																@PathVariable Integer transactionId,
-																@RequestBody Transaction transaction)
+	@PutMapping("/alter")
+	public ResponseEntity<Map<String, Object>> alterTransaction(@Valid @RequestBody AlterTransactionRequest transaction, BindingResult result)
+
 	{
+		if(result.hasErrors()) {
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+		
 		Map<String, Object> map = new HashMap<String, Object>();
 		
-		User user = getSessionUser();
 		
-		transactionService.updateTransaction(user.getUserId(), transactionId, categoryId, transaction);
+		
+		Transaction updateTransaction = transactionService.updateTransaction(transaction, getSessionUser().getUserId());
+		BeanUtils.copyProperties(updateTransaction, transaction);
 		map.put("success", true);
+		map.put("transaction", transaction);
 		return new ResponseEntity<>(map, HttpStatus.ACCEPTED);
 	}
 	
@@ -146,6 +149,26 @@ public class TransactionResource extends GenericResource{
 		var response = new TransactionDTOResponse(new PageImpl<TransactionDTO>(dtoList, search.getPageable(), search.getTotalElements()));
 		
 		return new ResponseEntity<>(response, HttpStatus.OK);
+	}
+	
+	@GetMapping("/periodRelatory")
+	public ResponseEntity<TransactionRelatoryPaginationResponse> relatory(
+								@PathParam("startDate") @DateTimeFormat(pattern="yyyy-MM-dd") LocalDate startDate,
+								@PathParam("endDate") @DateTimeFormat(pattern="yyyy-MM-dd") LocalDate endDate,
+								@PathParam("category") Integer category,
+								@PathParam("page") Integer page,
+								@PathParam("size") Integer size)
+	{	
+		
+		if(page == null)
+			page = 1;
+		if(size == null)
+			size = DEFAULT_SIZE;
+		
+		Page<TransactionRelatory> relatory = transactionService.periodRelatory(startDate, endDate, category, getSessionUser(), page, size);
+		
+		
+		return new ResponseEntity<>(new TransactionRelatoryPaginationResponse(relatory), HttpStatus.OK);
 	}
 
 	private TransactionDTO domainToModel(Transaction transaction) {

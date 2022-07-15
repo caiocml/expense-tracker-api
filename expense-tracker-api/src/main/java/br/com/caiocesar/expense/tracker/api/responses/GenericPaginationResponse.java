@@ -1,12 +1,12 @@
 package br.com.caiocesar.expense.tracker.api.responses;
 
+import org.springframework.data.domain.Page;
+
 import java.util.List;
 import java.util.Objects;
-
-import org.springframework.data.domain.Page;
 /**
  * Generic Response for less data transfer, this class returns a cleaner pagination.
- * @author Caio César
+ * @author Caio Cesar
  *
  * @param <T>
  */

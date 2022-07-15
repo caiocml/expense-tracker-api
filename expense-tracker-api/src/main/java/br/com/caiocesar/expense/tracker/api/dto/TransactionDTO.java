@@ -6,6 +6,7 @@ import br.com.caiocesar.expense.tracker.api.payment.InvoiceType;
 
 public class TransactionDTO implements GenericDto{
 
+	private Integer transactionId;
 	private Double amount;
 	private String note;
 	private LocalDateTime transactionDate;
@@ -48,6 +49,12 @@ public class TransactionDTO implements GenericDto{
 	}
 	public void setPaymentTypeId(Integer paymentTypeId) {
 		this.paymentTypeId = paymentTypeId;
+	}
+	public Integer getTransactionId() {
+		return transactionId;
+	}
+	public void setTransactionId(Integer transactionId) {
+		this.transactionId = transactionId;
 	}
 
 

@@ -6,14 +6,15 @@ import org.springframework.data.domain.Page;
 
 import br.com.caiocesar.expense.tracker.api.projections.TransactionRelatory;
 
-public class TransactionRelatoryResponse extends GenericPaginationResponse<TransactionRelatory> {
+public class TransactionRelatoryPaginationResponse extends GenericPaginationResponse<TransactionRelatory> {
 
 	private List<TransactionRelatory> transactions;
 	
-	public TransactionRelatoryResponse(Page<TransactionRelatory> page) {
+	public TransactionRelatoryPaginationResponse(Page<TransactionRelatory> page) {
 		super(page, true);
 		this.transactions = page.getContent();
 	}
+
 
 	public List<TransactionRelatory> getTransactions() {
 		return transactions;

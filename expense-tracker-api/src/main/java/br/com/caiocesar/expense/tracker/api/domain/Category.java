@@ -1,17 +1,7 @@
 package br.com.caiocesar.expense.tracker.api.domain;
 
+import javax.persistence.*;
 import java.util.List;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
-
-import org.hibernate.annotations.Formula;
 
 @Entity
 @Table(name = "et_categories")
@@ -28,16 +18,16 @@ public class Category {
 	
 	private String description;
 	
-	@Formula("(select count(*) from et_transactions t where t.category_id = category_id)")
-	private Integer totalTransactions;
-		
-	@Formula("(select coalesce(sum(t.amount), 0.0) from et_categories right outer join et_transactions t on et_categories.category_id = t.category_id)")
-	private Double totalExpense;
-	
-	@Formula("(select coalesce(sum(t.amount), 0.0) from et_categories et left join et_transactions t on et.category_id = t.category_id "
-			+ "where et.category_id = category_id)")
-	private Double totalCategoryExpenses;
-	
+//	@Formula("(select count(*) from et_transactions t where t.category_id = category_id)")
+//	private Integer totalTransactions;
+//
+//	@Formula("(select coalesce(sum(t.amount), 0.0) from et_categories right outer join et_transactions t on et_categories.category_id = t.category_id)")
+//	private Double totalExpense;
+//
+//	@Formula("(select coalesce(sum(t.amount), 0.0) from et_categories et left join et_transactions t on et.category_id = t.category_id "
+//			+ "where et.category_id = category_id)")
+//	private Double totalCategoryExpenses;
+//
 	@OneToMany(mappedBy = "category", fetch = FetchType.LAZY)
 	private List<Transaction> transactions;
 	
@@ -90,29 +80,29 @@ public class Category {
 		this.description = description;
 	}
 
-	public Double getTotalExpense() {
-		return totalExpense;
-	}
-
-	public void setTotalExpense(Double totalExpense) {
-		this.totalExpense = totalExpense;
-	}
-
-	public Double getTotalCategoryExpenses() {
-		return totalCategoryExpenses;
-	}
-
-	public void setTotalCategoryExpenses(Double totalCategoryExpenses) {
-		this.totalCategoryExpenses = totalCategoryExpenses;
-	}
-
-	public Integer getTotalTransactions() {
-		return totalTransactions;
-	}
-
-	public void setTotalTransactions(Integer totalTransactions) {
-		this.totalTransactions = totalTransactions;
-	}
+//	public Double getTotalExpense() {
+//		return totalExpense;
+//	}
+//
+//	public void setTotalExpense(Double totalExpense) {
+//		this.totalExpense = totalExpense;
+//	}
+//
+//	public Double getTotalCategoryExpenses() {
+//		return totalCategoryExpenses;
+//	}
+//
+//	public void setTotalCategoryExpenses(Double totalCategoryExpenses) {
+//		this.totalCategoryExpenses = totalCategoryExpenses;
+//	}
+//
+//	public Integer getTotalTransactions() {
+//		return totalTransactions;
+//	}
+//
+//	public void setTotalTransactions(Integer totalTransactions) {
+//		this.totalTransactions = totalTransactions;
+//	}
 
 //	public User getUserModel() {
 //		return userModel;
