@@ -13,6 +13,10 @@ public interface TransactionRelatory {
 	InvoiceType getInvoiceType();
 	String getCategoryDescription();
 	LocalDateTime getDate();
+	Integer getCategoryId();
+	
+	String getTitle();
+	String getCategoryName();
 	
 	/**
 	+ " t.amount as amount,"
