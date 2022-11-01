@@ -24,7 +24,7 @@ public interface TransactionCrud extends JpaRepository<Transaction, Integer>{
 
 	@Query("SELECT"
 			+ " c.title as categoryName,"
-			+ " c.id as categoryId,"
+			+ " c.categoryId as categoryId,"
 			+ " t.transactionId as transactionId,"
 			+ " t.amount as amount,"
 			+ " t.note as note,"
@@ -41,26 +41,6 @@ public interface TransactionCrud extends JpaRepository<Transaction, Integer>{
 	
 	Optional<Transaction> findByTransactionIdAndUserId(Integer transactionId, Integer userId);
 
-/*	
-	@Query(value = "select"
-			+ " sum(amount) as amount,"
-			+ " c.title as categoryName"
-			+ " from et_transactions t"
-			+ " inner join et_categories c on c.category_id = t.category_id"
-			+ " where t.user_id = :userId"
-			//+ " and t.category_id = :category"
-			+ " and transaction_date >= :startDate"
-			+ " and transaction_date <= :endDate"
-			+ " group by c.title",
-			nativeQuery = true)
-	List<TransactionRelatory> periodRelatory(
-			Pageable pageable,
-			@Param("startDate") LocalDate startDate, 
-			@Param("endDate") LocalDate endDate, 
-			@Param("userId")Integer userId);
-	
-	*/
-	
 	@Query(value = "select"
 			+ " SUM(t.amount) as amount,"
 			+ " c.title as categoryName"

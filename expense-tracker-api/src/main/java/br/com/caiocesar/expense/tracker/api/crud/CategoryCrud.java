@@ -1,13 +1,13 @@
 package br.com.caiocesar.expense.tracker.api.crud;
 
-import java.util.List;
-
-import org.springframework.data.repository.CrudRepository;
-
 import br.com.caiocesar.expense.tracker.api.domain.Category;
 import br.com.caiocesar.expense.tracker.api.projections.DescriptionCategoryOnly;
+import org.springframework.data.repository.CrudRepository;
+import org.springframework.stereotype.Repository;
 
-//@Repository
+import java.util.List;
+
+@Repository
 public interface CategoryCrud extends CrudRepository<Category, Integer> {
 	
 	

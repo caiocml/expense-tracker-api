@@ -1,0 +1,15 @@
+type Query{
+    transactions:[Transaction]
+}
+
+type Transaction{
+    id: ID!
+    amount: Float
+    category: Category
+}
+
+type Category{
+    id: ID
+    tittle: String
+    description: String
+}

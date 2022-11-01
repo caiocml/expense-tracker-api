@@ -1,7 +1,12 @@
 package br.com.caiocesar.expense.tracker.api;
 
-import java.time.format.DateTimeFormatter;
-
+import br.com.caiocesar.expense.tracker.api.filters.AuthFilter;
+import br.com.caiocesar.expense.tracker.api.repository.UserRepository;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;
+import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
+import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
+import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -12,17 +17,12 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;
-import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
-import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
-import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
-
-import br.com.caiocesar.expense.tracker.api.filters.AuthFilter;
-import br.com.caiocesar.expense.tracker.api.repository.UserRepository;
+import java.time.format.DateTimeFormatter;
 
 @SpringBootApplication
 public class ExpenseTrackerApiApplication {
+
+
 
 	public static void main(String[] args) {
 	    System.setProperty("server.servlet.context-path", "/api");
@@ -87,5 +87,7 @@ public class ExpenseTrackerApiApplication {
 			
 		};
 	}
+
+
 
 }

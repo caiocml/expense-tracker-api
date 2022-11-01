@@ -1,5 +1,7 @@
 package br.com.caiocesar.expense.tracker.api.domain;
 
+import org.hibernate.annotations.Formula;
+
 import javax.persistence.*;
 import java.util.List;
 
@@ -18,16 +20,16 @@ public class Category {
 	
 	private String description;
 	
-//	@Formula("(select count(*) from et_transactions t where t.category_id = category_id)")
-//	private Integer totalTransactions;
-//
-//	@Formula("(select coalesce(sum(t.amount), 0.0) from et_categories right outer join et_transactions t on et_categories.category_id = t.category_id)")
-//	private Double totalExpense;
-//
-//	@Formula("(select coalesce(sum(t.amount), 0.0) from et_categories et left join et_transactions t on et.category_id = t.category_id "
-//			+ "where et.category_id = category_id)")
-//	private Double totalCategoryExpenses;
-//
+	@Formula("(select count(*) from et_transactions t where t.category_id = category_id)")
+	private Integer totalTransactions;
+
+	@Formula("(select coalesce(sum(t.amount), 0.0) from et_categories right outer join et_transactions t on et_categories.category_id = t.category_id)")
+	private Double totalExpense;
+
+	@Formula("(select coalesce(sum(t.amount), 0.0) from et_categories et left join et_transactions t on et.category_id = t.category_id "
+			+ "where et.category_id = category_id)")
+	private Double totalCategoryExpenses;
+
 	@OneToMany(mappedBy = "category", fetch = FetchType.LAZY)
 	private List<Transaction> transactions;
 	
