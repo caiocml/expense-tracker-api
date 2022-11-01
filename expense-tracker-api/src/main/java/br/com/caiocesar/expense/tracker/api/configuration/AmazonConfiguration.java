@@ -11,8 +11,8 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class AmazonConfiguration {
 
-    public static final String ACCESS_KEY = "AKIASSO2LADF7BY2CV4O";
-    public static final String SECRET_KEY = "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";
+    public static final String ACCESS_KEY = "{{aws-access-key}}";
+    public static final String SECRET_KEY = "{{aws-secret-key}}";
 
 
 
