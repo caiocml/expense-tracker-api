@@ -11,7 +11,7 @@ after install docker, creat a image for postgresdb.
 1- download the postgress image -> 
 # docker pull postgres
 
-2- run the line command to run postgress, the -p is the port to port, the firs one is the docker image port, the second one is your machine / server port
+2- run the line command to run postgress, the -p is the port to port, the first one is the host port the second one is the container port
 
 # docker run -p 5432:5432 -e POSTGRES_PASSWORD="YOUR_PASSWORD" postgres
 
