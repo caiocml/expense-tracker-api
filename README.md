@@ -1,10 +1,11 @@
 # expense-tracker-api
 Project to track transactions
 
-download docker from https://www.docker.com/products/docker-desktop
+First download docker from https://www.docker.com/products/docker-desktop
 
-#this project is using postgresql with docker, another databases is suported but I can't garantee that.
-#if you dont want use docker, skip this and just create a local database, run the .sql file local and add the conection properties on the file application.properties
+> This project is using postgresql with docker, another databases is suported but I can't garantee that. 
+
+> If you dont want use docker, skip this and just create a local database, run the .sql file local and add the conection properties on the file application.properties
 
 after install docker, creat a image for postgresdb.
 
