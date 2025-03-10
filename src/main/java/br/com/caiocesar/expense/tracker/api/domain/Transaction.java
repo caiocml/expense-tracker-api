@@ -1,18 +1,11 @@
 package br.com.caiocesar.expense.tracker.api.domain;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 import br.com.caiocesar.expense.tracker.api.payment.InvoiceType;
 
@@ -23,28 +16,40 @@ public class Transaction {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer transactionId;
-	
+
+	@Column(nullable = false)
 	private Integer userId;
 	
-	@Column(name = "category_id")
+	@Column(name = "category_id", nullable = false)
 	private Integer categoryId;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "category_id",updatable = false, insertable = false)
 	private Category category;
-	
-	private Double amount;
+
+	@Column(nullable = false)
+	private BigDecimal amount;
 	
 	private String note;
 	
 	private LocalDateTime transactionDate;
 	
-	@Column(name = "payment_type_id")
+	@Column(name = "payment_type_id", nullable = false)
 	private Integer paymentTypeId;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "payment_type_id", insertable = false, updatable = false)
 	private PaymentType paymentType;
+
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "transaction", cascade = CascadeType.ALL)
+	private List<ReceivablesPayables> receivablesPayables;
+
+	private Integer installmentsNumber;
+
+	private TransactionType transactionType;
+
+	@Column(nullable = false)
+	private CreditDebit creditDebit;
 	
 	public Category getCategory() {
 		return category;
@@ -62,14 +67,12 @@ public class Transaction {
 		this.paymentType = paymentType;
 	}
 
-	@Enumerated(EnumType.STRING)
-	private InvoiceType invoiceType;
 
 	public Transaction() {
 		
 	}
 
-	public Transaction(Integer userId, Integer categoryId, Double amount, String note, LocalDateTime transactionDate) {
+	public Transaction(Integer userId, Integer categoryId, BigDecimal amount, String note, LocalDateTime transactionDate) {
 		this.userId = userId;
 		this.categoryId = categoryId;
 		this.amount = amount;
@@ -101,11 +104,11 @@ public class Transaction {
 		this.categoryId = categoryId;
 	}
 
-	public Double getAmount() {
+	public BigDecimal getAmount() {
 		return amount;
 	}
 
-	public void setAmount(Double amount) {
+	public void setAmount(BigDecimal amount) {
 		this.amount = amount;
 	}
 
@@ -133,16 +136,46 @@ public class Transaction {
 		this.paymentTypeId = paymentTypeId;
 	}
 
-	public InvoiceType getInvoiceType() {
-		return invoiceType;
+    public Integer getInstallmentsNumber() {
+        return installmentsNumber;
+    }
+
+    public void setInstallmentsNumber(Integer installment) {
+        this.installmentsNumber = installment;
+    }
+
+    public CreditDebit getCreditDebit() {
+        return creditDebit;
+    }
+
+    public void setCreditDebit(CreditDebit creditDebit) {
+        this.creditDebit = creditDebit;
+    }
+
+    public TransactionType getTransactionType() {
+        return transactionType;
+    }
+
+    public void setTransactionType(TransactionType transactionType) {
+        this.transactionType = transactionType;
+    }
+
+    public List<ReceivablesPayables> getReceivablesPayables() {
+        return receivablesPayables;
+    }
+
+    public void setReceivablesPayables(List<ReceivablesPayables> receivablesPayables) {
+
+		receivablesPayables.forEach(receivablePayable -> receivablePayable.setTransaction(this));
+
+        this.receivablesPayables = receivablesPayables;
+    }
+
+	public void addReceivablePayable(ReceivablesPayables receivablePayable) {
+		if(this.receivablesPayables == null){
+			this.receivablesPayables = new ArrayList<>();
+		}
+		receivablePayable.setTransaction(this);
+		this.receivablesPayables.add(receivablePayable);
 	}
-
-	public void setInvoiceType(InvoiceType invoiceType) {
-		this.invoiceType = invoiceType;
-	}
-
-
-	
-	
-
 }

@@ -29,7 +29,6 @@ public interface TransactionCrud extends JpaRepository<Transaction, Integer>{
 			+ " t.amount as amount,"
 			+ " t.note as note,"
 			+ " p.description as paymentDescription,"
-			+ " t.invoiceType as invoiceType,"
 			+ " c.description as categoryDescription,"
 			+ " t.transactionDate as date"
 			+ " from Transaction t"

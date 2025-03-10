@@ -1,5 +1,6 @@
 package br.com.caiocesar.expense.tracker.api.repository;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -27,10 +28,9 @@ import br.com.caiocesar.expense.tracker.api.projections.TransactionRelatory;
 public class TransactionRepository {
 	
 	@Autowired
-	TransactionCrud transactionCrud;
-	
-	//@Autowired
-	CategoryRepository categoryRepository;
+	private TransactionCrud transactionCrud;
+
+	private CategoryRepository categoryRepository;
 	
 	@Autowired
 	public void setCategoryService(@Lazy CategoryRepository categoryRepository) {
@@ -58,8 +58,8 @@ public class TransactionRepository {
 	}
 
 	
-	public Transaction create(Integer userId, Integer categoryId, Double amount, String note,
-			LocalDateTime transactionDate) throws BusinessException {
+	public Transaction create(Integer userId, Integer categoryId, BigDecimal amount, String note,
+							  LocalDateTime transactionDate) throws BusinessException {
 		
 		Category category = categoryRepository.findByIdAndUserId(categoryId, userId);
 		

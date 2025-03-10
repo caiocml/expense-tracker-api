@@ -11,6 +11,10 @@ public class PaymentTypeDTO implements GenericDto{
 	private Integer bankNumber;
 	private Integer agencyNumber;
 	private Integer userId;
+	private Integer expirationDay;
+	private Integer daysToCloseInvoice;
+
+
 	public Integer getId() {
 		return id;
 	}
@@ -66,5 +70,20 @@ public class PaymentTypeDTO implements GenericDto{
 		this.userId = userId;
 	}
 
-	
+
+    public Integer getExpirationDay() {
+        return expirationDay;
+    }
+
+    public void setExpirationDay(Integer expirationDay) {
+        this.expirationDay = expirationDay;
+    }
+
+    public Integer getDaysToCloseInvoice() {
+        return daysToCloseInvoice;
+    }
+
+    public void setDaysToCloseInvoice(Integer daysToCloseInvoice) {
+        this.daysToCloseInvoice = daysToCloseInvoice;
+    }
 }

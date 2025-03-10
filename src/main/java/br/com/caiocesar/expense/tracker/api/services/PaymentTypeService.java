@@ -1,6 +1,7 @@
 package br.com.caiocesar.expense.tracker.api.services;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
@@ -13,7 +14,7 @@ import br.com.caiocesar.expense.tracker.api.repository.PaymentTypeRepo;
 public class PaymentTypeService {
 	
 	@Autowired
-	PaymentTypeRepo repository;
+	private PaymentTypeRepo repository;
 	
 	public PaymentType save(PaymentType paymentType) {
 		return repository.save(paymentType);
@@ -23,6 +24,10 @@ public class PaymentTypeService {
 		var sample = new PaymentType();
 		sample.setUserId(userId);
 		return repository.findAll(Example.of(sample));
+	}
+
+	public Optional<PaymentType> findByIdAndUserId(Integer paymentTypeId, Integer userId) {
+		return repository.findByIdAndUserId(paymentTypeId, userId);
 	}
 
 }

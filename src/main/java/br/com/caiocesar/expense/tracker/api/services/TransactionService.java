@@ -1,13 +1,13 @@
 package br.com.caiocesar.expense.tracker.api.services;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Consumer;
 
 import javax.validation.Valid;
 
+import br.com.caiocesar.expense.tracker.api.domain.*;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
@@ -19,8 +19,6 @@ import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import br.com.caiocesar.expense.tracker.api.domain.Transaction;
-import br.com.caiocesar.expense.tracker.api.domain.User;
 import br.com.caiocesar.expense.tracker.api.exceptions.BusinessException;
 import br.com.caiocesar.expense.tracker.api.exceptions.NotFoundException;
 import br.com.caiocesar.expense.tracker.api.projections.TransactionRelatory;
@@ -32,24 +30,15 @@ import br.com.caiocesar.expense.tracker.api.requests.AlterTransactionRequest;
 public class  TransactionService {
 	
 	@Autowired
-	TransactionRepository transactionRespository;
+	private TransactionRepository transactionRespository;
+
+	@Autowired
+	private ReceivablesPayablesService receivablesPayablesService;
 
 	public List<Transaction> fetchAllTransactions(Integer userId, Integer categoryId) {
 		return transactionRespository.fetchAllTransactions(userId, categoryId);
 	}
 
-	
-	public Transaction fetchTransactionById(Integer userId, Integer transactionId) {
-		return transactionRespository.findById(userId, transactionId);
-	}
-
-	
-	public Transaction addTransaction(Integer userId, Integer categoryId, Double amount, String note,
-			LocalDateTime transactionDate) throws BusinessException {
-		return transactionRespository.create(userId, categoryId, amount, note, transactionDate);
-	}
-
-	
 	public void removeTransaction(Integer transactionId, User user) throws NotFoundException, BusinessException {
 		
 		Runnable action  = () -> {
@@ -64,6 +53,28 @@ public class  TransactionService {
 
 
 	public Transaction save(Transaction transaction) {
+
+		if(transaction.getCreditDebit() == null){
+			//padrao vai ser sempre um gasto e nao um recebimento
+			transaction.setCreditDebit(CreditDebit.DEBIT);
+		}
+
+		if(transaction.getTransactionType() == null){
+			transaction.setTransactionType(TransactionType.SINGLE);
+			transaction.setInstallmentsNumber(1);
+		}
+
+		if(transaction.getTransactionType() == TransactionType.INSTALLMENTS ||
+			transaction.getTransactionType() == TransactionType.RECURRING) {
+			if (transaction.getInstallmentsNumber() == null || transaction.getInstallmentsNumber() <= 0) {
+				throw new BusinessException("Installments number must be greater than 0");
+			}
+		}
+
+		List<ReceivablesPayables> receivablesPayables = receivablesPayablesService.createReceivablesPayables(transaction);
+
+		transaction.setReceivablesPayables(receivablesPayables);
+
 		return transactionRespository.save(transaction);
 	}
 
