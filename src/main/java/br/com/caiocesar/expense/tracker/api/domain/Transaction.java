@@ -7,8 +7,6 @@ import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
-import br.com.caiocesar.expense.tracker.api.payment.InvoiceType;
-
 @Entity
 @Table(name = "et_transactions")
 public class Transaction {
@@ -50,7 +48,10 @@ public class Transaction {
 
 	@Column(nullable = false)
 	private CreditDebit creditDebit;
-	
+
+	@Column(nullable = false)
+	private LocalDateTime createdAt;
+
 	public Category getCategory() {
 		return category;
 	}
@@ -178,4 +179,12 @@ public class Transaction {
 		receivablePayable.setTransaction(this);
 		this.receivablesPayables.add(receivablePayable);
 	}
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
+    }
 }

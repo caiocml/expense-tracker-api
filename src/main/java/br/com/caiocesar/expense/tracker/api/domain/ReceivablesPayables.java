@@ -3,6 +3,7 @@ package br.com.caiocesar.expense.tracker.api.domain;
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "et_receivables_payables")
@@ -25,6 +26,9 @@ public class ReceivablesPayables {
     private LocalDate paymentDate;
 
     private Integer installment;
+
+    @Column(nullable = false)
+    private LocalDateTime createdAt;
 
     public Long getReceivablePayableId() {
         return receivablePayableId;
@@ -80,5 +84,13 @@ public class ReceivablesPayables {
 
     public void setStatus(Status status) {
         this.status = status;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
     }
 }

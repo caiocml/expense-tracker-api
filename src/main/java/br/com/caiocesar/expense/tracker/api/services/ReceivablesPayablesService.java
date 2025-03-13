@@ -8,8 +8,10 @@ import org.springframework.transaction.annotation.Transactional;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.YearMonth;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 @Service
@@ -24,19 +26,48 @@ public class ReceivablesPayablesService {
 
     public List<ReceivablesPayables> createReceivablesPayables(Transaction transaction) {
 
-        List<ReceivablesPayables> receivablesPayablesList = new ArrayList<>();
-        if(transaction.getTransactionType() == TransactionType.SINGLE){
-            var receivablePayable = createSingle(transaction);
-            receivablesPayablesList.add(receivablePayable);
-        }else if(transaction.getTransactionType() == TransactionType.INSTALLMENTS){
-
-            List<ReceivablesPayables> installments = createInstallments(transaction);
-            receivablesPayablesList.addAll(installments);
-
-        }else{
-            throw new BusinessException("Transaction type not found");
+        switch (transaction.getTransactionType()){
+            case SINGLE:
+                return Collections.singletonList(createSingle(transaction));
+            case INSTALLMENTS:
+                return createInstallments(transaction);
+            case RECURRING:
+                return createRecurring(transaction);
+            default:
+                throw new BusinessException("Transaction type not implemented yet " + transaction.getTransactionType());
         }
 
+    }
+
+    private List<ReceivablesPayables> createRecurring(Transaction transaction) {
+        var receivablesPayablesList = new ArrayList<ReceivablesPayables>();
+        for (int i =1 ; i <= transaction.getInstallmentsNumber(); i ++) {
+            var receivable = new ReceivablesPayables();
+
+            receivable.setInstallment(1);
+            receivable.setAmount(transaction.getAmount());
+            receivable.setStatus(Status.OPEN);
+            receivable.setCreatedAt(LocalDateTime.now());
+
+            PaymentType paymentType = getPaymentType(transaction);
+
+            Integer expirationDay = paymentType.getExpirationDay();
+
+            if (expirationDay == null) {
+                expirationDay = 1;
+            }
+
+            LocalDateTime transactionDateAux = transaction.getTransactionDate();
+            YearMonth yearMonth = YearMonth.from(transactionDateAux);
+
+            yearMonth = yearMonth.plusMonths(i);
+
+            LocalDate dueDate = yearMonth.atDay(expirationDay);
+
+            receivable.setDueDate(dueDate);
+
+            receivablesPayablesList.add(receivable);
+        }
         return receivablesPayablesList;
     }
 
@@ -47,13 +78,13 @@ public class ReceivablesPayablesService {
         BigDecimal amount = transaction.getAmount()
                 .divide(BigDecimal.valueOf(transaction.getInstallmentsNumber()), 2, RoundingMode.HALF_UP);
 
-        final LocalDate today = LocalDate.now();
         for (int i =1 ; i <= transaction.getInstallmentsNumber(); i ++){
 
             var receivable = new ReceivablesPayables();
             receivable.setInstallment(i);
             receivable.setStatus(Status.OPEN);
             receivable.setAmount(amount);
+            receivable.setCreatedAt(LocalDateTime.now());
 
             PaymentType paymentType = getPaymentType(transaction);
 
@@ -98,6 +129,7 @@ public class ReceivablesPayablesService {
         receivable.setInstallment(1);
         receivable.setAmount(transaction.getAmount());
         receivable.setStatus(Status.OPEN);
+        receivable.setCreatedAt(LocalDateTime.now());
 
         PaymentType paymentType = getPaymentType(transaction);
 

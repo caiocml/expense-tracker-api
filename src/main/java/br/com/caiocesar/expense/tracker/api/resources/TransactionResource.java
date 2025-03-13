@@ -47,7 +47,7 @@ public class TransactionResource extends GenericResource{
 	private static final Integer DEFAULT_SIZE = 100;
 
 	@Autowired
-	TransactionService transactionService;
+	private TransactionService transactionService;
 
 	@PostMapping("{categoryId}/register")
 	public ResponseEntity<TransactionDTO> saveTransaction(@PathVariable Integer categoryId, @RequestBody TransactionDTO body){

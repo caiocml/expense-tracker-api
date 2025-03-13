@@ -1,6 +1,7 @@
 package br.com.caiocesar.expense.tracker.api.services;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Consumer;
@@ -70,6 +71,8 @@ public class  TransactionService {
 				throw new BusinessException("Installments number must be greater than 0");
 			}
 		}
+
+		transaction.setCreatedAt(LocalDateTime.now());
 
 		List<ReceivablesPayables> receivablesPayables = receivablesPayablesService.createReceivablesPayables(transaction);
 
