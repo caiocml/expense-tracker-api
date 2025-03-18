@@ -122,7 +122,7 @@ public class TransactionRepository {
 
 
 	public Optional<Transaction> findByTransactionIdAndUserId(Integer transactionId, Integer userId) {
-		return transactionCrud.findByTransactionIdAndUserId(transactionId, userId);
+		return transactionCrud.findByIdAndUserId(transactionId, userId);
 	}
 
 

@@ -86,7 +86,7 @@ public class  TransactionService {
 		var sample = new Transaction();
 		sample.setUserId(userId);
 		
-		Pageable pageable = PageRequest.of(page - 1, size, Sort.by(Direction.DESC, new String[]{"transactionId"}));
+		Pageable pageable = PageRequest.of(page - 1, size, Sort.by(Direction.ASC, "id"));
 		
 		return transactionRespository.findAll(Example.of(sample), pageable);
 	}

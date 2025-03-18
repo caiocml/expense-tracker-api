@@ -1,5 +1,6 @@
 package br.com.caiocesar.expense.tracker.api.repository;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -74,6 +75,7 @@ public class CategoryRepositoryImpl implements CategoryRepository {
 		category.setUserId(user.getUserId());
 		category.setTitle(title);
 		category.setDescription(description);
+		category.setCreatedAt(LocalDateTime.now());
 				
 		categoryCrud.save(category);
 		
@@ -113,7 +115,7 @@ public class CategoryRepositoryImpl implements CategoryRepository {
 		//removeAllCategoryTransactions(userId, categoryId);
 		//jdbcTemplate.update(SQL_DELETE_CATEGORY, new Object[] {userId, categoryId});
 		removeAllCategoryTransactions(userId, categoryId);
-		categoryCrud.deleteByUserIdAndCategoryId(userId, categoryId);
+		categoryCrud.deleteByUserIdAndId(userId, categoryId);
 	}
 
 	private void removeAllCategoryTransactions(Integer userId, Integer categoryId) {
@@ -133,7 +135,7 @@ public class CategoryRepositoryImpl implements CategoryRepository {
 
 	@Override
 	public Category findByIdAndUserId(Integer categoryId, Integer userId) {
-		return categoryCrud.findByCategoryIdAndUserId(categoryId, userId);
+		return categoryCrud.findByIdAndUserId(categoryId, userId);
 	}
 	
 

@@ -1,6 +1,8 @@
 package br.com.caiocesar.expense.tracker.api.domain;
 
 import jakarta.persistence.*;
+
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
@@ -9,7 +11,8 @@ public class Category {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer categoryId;
+	@Column(name = "category_id")
+	private Integer id;
 	
 	@Column(name ="user_id")
 	private Integer userId;
@@ -17,6 +20,8 @@ public class Category {
 	private String title;
 	
 	private String description;
+
+	private LocalDateTime createdAt;
 	
 //	@Formula("(select count(*) from et_transactions t where t.category_id = category_id)")
 //	private Integer totalTransactions;
@@ -48,12 +53,12 @@ public class Category {
 		
 	}
 
-	public Integer getCategoryId() {
-		return categoryId;
+	public Integer getId() {
+		return id;
 	}
 
-	public void setCategoryId(Integer categoryId) {
-		this.categoryId = categoryId;
+	public void setId(Integer categoryId) {
+		this.id = categoryId;
 	}
 
 	public Integer getUserId() {
@@ -79,6 +84,14 @@ public class Category {
 	public void setDescription(String description) {
 		this.description = description;
 	}
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
+    }
 
 //	public Double getTotalExpense() {
 //		return totalExpense;

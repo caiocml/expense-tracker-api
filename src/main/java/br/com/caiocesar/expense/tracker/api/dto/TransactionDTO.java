@@ -8,7 +8,7 @@ import br.com.caiocesar.expense.tracker.api.domain.TransactionType;
 
 public class TransactionDTO implements GenericDto{
 
-	private Integer transactionId;
+	private Integer id;
 	private BigDecimal amount;
 	private String note;
 	private LocalDateTime transactionDate;
@@ -17,6 +17,7 @@ public class TransactionDTO implements GenericDto{
 	private Integer paymentTypeId;
 	private TransactionType transactionType;
 	private Integer installmentsNumber;
+	private CategoryDTO category;
 	
 	public BigDecimal getAmount() {
 		return amount;
@@ -48,11 +49,11 @@ public class TransactionDTO implements GenericDto{
 	public void setPaymentTypeId(Integer paymentTypeId) {
 		this.paymentTypeId = paymentTypeId;
 	}
-	public Integer getTransactionId() {
-		return transactionId;
+	public Integer getId() {
+		return id;
 	}
-	public void setTransactionId(Integer transactionId) {
-		this.transactionId = transactionId;
+	public void setId(Integer id) {
+		this.id = id;
 	}
 
 
@@ -79,4 +80,12 @@ public class TransactionDTO implements GenericDto{
 	public void setCreditDebit(CreditDebit creditDebit) {
 		this.creditDebit = creditDebit;
 	}
+
+    public CategoryDTO getCategory() {
+        return category;
+    }
+
+    public void setCategory(CategoryDTO category) {
+        this.category = category;
+    }
 }

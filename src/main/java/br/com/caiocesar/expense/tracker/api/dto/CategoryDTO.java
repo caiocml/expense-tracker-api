@@ -1,25 +1,27 @@
 package br.com.caiocesar.expense.tracker.api.dto;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 public class CategoryDTO implements GenericDto {
 
-	private Integer categoryId;
+	private Integer id;
 	private Integer userId;
 	private String title;
 	private String description;	
 	private Integer totalTransactions;		
 	private Double totalExpense;
 	private Double totalCategoryExpenses;
+	private LocalDateTime createdAt;
 	
 	private List<TransactionDTO> transactions;
 
-	public Integer getCategoryId() {
-		return categoryId;
+	public Integer getId() {
+		return id;
 	}
 
-	public void setCategoryId(Integer categoryId) {
-		this.categoryId = categoryId;
+	public void setId(Integer id) {
+		this.id = id;
 	}
 
 	public Integer getUserId() {
@@ -77,7 +79,13 @@ public class CategoryDTO implements GenericDto {
 	public void setTransactions(List<TransactionDTO> transactions) {
 		this.transactions = transactions;
 	}
-	
-	
 
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
+    }
 }

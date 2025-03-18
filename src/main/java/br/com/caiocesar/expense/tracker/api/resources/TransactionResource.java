@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+import br.com.caiocesar.expense.tracker.api.dto.CategoryDTO;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import jakarta.websocket.server.PathParam;
@@ -44,12 +45,12 @@ import br.com.caiocesar.expense.tracker.api.services.TransactionService;
 @RequestMapping("/transactions")
 public class TransactionResource extends GenericResource{
 	
-	private static final Integer DEFAULT_SIZE = 100;
+	private static final Integer DEFAULT_SIZE = 1;
 
 	@Autowired
 	private TransactionService transactionService;
 
-	@PostMapping("{categoryId}/register")
+	@PostMapping("{categoryId}")
 	public ResponseEntity<TransactionDTO> saveTransaction(@PathVariable Integer categoryId, @RequestBody TransactionDTO body){
 		
 		User user = getSessionUser();
@@ -71,8 +72,7 @@ public class TransactionResource extends GenericResource{
 	}
 	
 	@GetMapping("{categoryId}")
-	public ResponseEntity<List<TransactionDTO>> allUserCategoryTransactions(HttpServletRequest request,
-			@PathVariable Integer categoryId){
+	public ResponseEntity<List<TransactionDTO>> allUserCategoryTransactions(@PathVariable Integer categoryId){
 		User user = getSessionUser();
 		
 		List<TransactionDTO>dtoList = new ArrayList<>();
@@ -146,7 +146,7 @@ public class TransactionResource extends GenericResource{
 			
 		});
 		
-		var response = new TransactionDTOResponse(new PageImpl<TransactionDTO>(dtoList, search.getPageable(), search.getTotalElements()));
+		var response = new TransactionDTOResponse(new PageImpl<>(dtoList, search.getPageable(), search.getTotalElements()));
 		
 		return new ResponseEntity<>(response, HttpStatus.OK);
 	}
@@ -176,8 +176,11 @@ public class TransactionResource extends GenericResource{
 		BeanUtils.copyProperties(transaction, dto);
 		var paymentDto = new PaymentTypeDTO();
 		BeanUtils.copyProperties(transaction.getPaymentType(),paymentDto);
+		var categoryDto = new CategoryDTO();
+		BeanUtils.copyProperties(transaction.getCategory(), categoryDto);
 		
 		dto.setPaymentType(paymentDto);
+		dto.setCategory(categoryDto);
 		
 		return dto;
 		

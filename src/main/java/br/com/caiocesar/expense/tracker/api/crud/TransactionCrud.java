@@ -25,7 +25,7 @@ public interface TransactionCrud extends JpaRepository<Transaction, Integer>{
 	@Query("SELECT"
 			+ " c.title as categoryName,"
 			+ " c.id as categoryId,"
-			+ " t.transactionId as transactionId,"
+			+ " t.id as transactionId,"
 			+ " t.amount as amount,"
 			+ " t.note as note,"
 			+ " p.description as paymentDescription,"
@@ -38,7 +38,7 @@ public interface TransactionCrud extends JpaRepository<Transaction, Integer>{
 	Page<TransactionRelatory> relatory(@Param(value = "userId" ) Integer userId, Pageable pageable);
 
 	
-	Optional<Transaction> findByTransactionIdAndUserId(Integer transactionId, Integer userId);
+	Optional<Transaction> findByIdAndUserId(Integer transactionId, Integer userId);
 
 /*	
 	@Query(value = "select"
@@ -64,7 +64,7 @@ public interface TransactionCrud extends JpaRepository<Transaction, Integer>{
 			+ " SUM(t.amount) as amount,"
 			+ " c.title as categoryName"
 			+ " from Transaction t"
-			+ " INNER JOIN Category c ON c.categoryId = t.categoryId"
+			+ " INNER JOIN Category c ON c.id = t.categoryId"
 			+ " where t.userId = :userId"
 			+ " and CAST(t.transactionDate as LocalDate) >= :startDate"
 			+ " and CAST(t.transactionDate as LocalDate) <= :endDate"

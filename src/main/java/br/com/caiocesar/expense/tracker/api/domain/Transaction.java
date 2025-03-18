@@ -13,7 +13,8 @@ public class Transaction {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer transactionId;
+	@Column(name = "transaction_id")
+	private Integer id;
 
 	@Column(nullable = false)
 	private Integer userId;
@@ -81,12 +82,12 @@ public class Transaction {
 		this.transactionDate = transactionDate;
 	}
 
-	public Integer getTransactionId() {
-		return transactionId;
+	public Integer getId() {
+		return id;
 	}
 
-	public void setTransactionId(Integer transactionId) {
-		this.transactionId = transactionId;
+	public void setId(Integer transactionId) {
+		this.id = transactionId;
 	}
 
 	public Integer getUserId() {

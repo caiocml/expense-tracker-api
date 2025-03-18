@@ -38,10 +38,8 @@ public class CategoryResource extends GenericResource {
 	@Autowired
 	CategoryService categoryService;
 
-	@PostMapping("/create")
-	public ResponseEntity<Map<String, Object>> createCategory(@RequestBody Map<String, Object> body) {
-
-		Map<String, Object> map = new HashMap<>();
+	@PostMapping("")
+	public ResponseEntity<CategoryDTO> createCategory(@RequestBody Map<String, Object> body) {
 
 		User user = getSessionUser();
 
@@ -49,10 +47,12 @@ public class CategoryResource extends GenericResource {
 		final String description = (String) body.get("description");
 
 		Category category = categoryService.addCategory(user.getUserId(), title, description);
-		map.put("created", "OK");
-		map.put("category", category);
 
-		return new ResponseEntity<>(map, HttpStatus.CREATED);
+		CategoryDTO dto = new CategoryDTO();
+		modelToDto(category, dto);
+		dto.setId(category.getId());
+
+		return new ResponseEntity<>(dto, HttpStatus.CREATED);
 	}
 
 	@GetMapping("/{categoryId}")
@@ -63,7 +63,7 @@ public class CategoryResource extends GenericResource {
 	}
 
 	@GetMapping("")
-	ResponseEntity<List<CategoryDTO>> ListAllUserCategory(@PathParam("fillTransactions") boolean fillTransactions,
+	public ResponseEntity<List<CategoryDTO>> ListAllUserCategory(@PathParam("fillTransactions") boolean fillTransactions,
 			@PathParam("fillPayment") boolean fillPayment) {
 
 		User user = getSessionUser();
@@ -115,8 +115,8 @@ public class CategoryResource extends GenericResource {
 		return transactionDto;
 	}
 
-	@PutMapping("/alter/{categoryId}")
-	ResponseEntity<CategoryDTO> alterCategory(HttpServletRequest request, @PathVariable Integer categoryId,
+	@PutMapping("/{categoryId}")
+	public ResponseEntity<CategoryDTO> alterCategory(HttpServletRequest request, @PathVariable Integer categoryId,
 			@RequestBody Map<String, String> requestBody) {
 
 		User user = getSessionUser();

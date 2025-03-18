@@ -15,9 +15,9 @@ public interface CategoryCrud extends CrudRepository<Category, Integer> {
 	
 	List<DescriptionCategoryOnly> findByDescriptionStartingWith(String description);
 	
-	void deleteByUserIdAndCategoryId(Integer userId, Integer categoryId);
+	void deleteByUserIdAndId(Integer userId, Integer categoryId);
 	
-	Category findByCategoryIdAndUserId(Integer categoryId, Integer userId);
+	Category findByIdAndUserId(Integer categoryId, Integer userId);
 	
 	List<Category> findByUserId(Integer userId);
 	
