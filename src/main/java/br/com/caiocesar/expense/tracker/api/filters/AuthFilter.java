@@ -2,12 +2,14 @@ package br.com.caiocesar.expense.tracker.api.filters;
 
 import java.io.IOException;
 
-import javax.servlet.FilterChain;
-import javax.servlet.ServletException;
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.security.Keys;
+import jakarta.servlet.FilterChain;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.ServletRequest;
+import jakarta.servlet.ServletResponse;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.filter.GenericFilterBean;
@@ -19,6 +21,8 @@ import br.com.caiocesar.expense.tracker.api.repository.UserRepository;
 import br.com.caiocesar.expense.tracker.api.util.Crypto;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
+
+import javax.crypto.SecretKey;
 
 public class AuthFilter extends GenericFilterBean{
 
@@ -43,8 +47,10 @@ public class AuthFilter extends GenericFilterBean{
 			if (headers.length > 1 && headers[1] != null) {
 				String token = headers[1];
 				try {
+
 					Claims claim = Jwts.parser()
 							.setSigningKey(Constants.API_SECRET_KEY)
+							.build()
 							.parseClaimsJws(token)
 							.getBody();
 

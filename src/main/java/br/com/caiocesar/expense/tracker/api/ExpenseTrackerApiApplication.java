@@ -60,7 +60,8 @@ public class ExpenseTrackerApiApplication {
 		
 		config.addAllowedOrigin("*");
 		config.addAllowedHeader("*");
-		
+		config.addAllowedMethod("*");
+
 		source.registerCorsConfiguration("/**", config);
 		
 		CorsFilter cors = new CorsFilter(source);

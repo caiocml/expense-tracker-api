@@ -1,6 +1,6 @@
 package br.com.caiocesar.expense.tracker.api.resources;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;

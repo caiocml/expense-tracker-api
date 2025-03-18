@@ -37,7 +37,7 @@ public class UserResources {
 	UserService userService;
 		
 	@PostMapping("/login")
-	public ResponseEntity<Map<String, String>> login(@RequestBody Map<String,String> body){
+	public ResponseEntity<UserAutenticated> login(@RequestBody Map<String,String> body){
 		
 		String email = body.get("email");
 		String password = body.get("password");
@@ -45,9 +45,15 @@ public class UserResources {
 		User user = userService.validateUser(email, password);
 		Map<String,String> map = new HashMap<>();
 		map.put("message","login sucessfull");
-		map.put("token", getUserToken(user));
+		String userToken = getUserToken(user);
+
+		UserDto userDto = new UserDto();
+		userDto.setFirstName(user.getFirstName());
+		userDto.setLastName(user.getLastName());
+		userDto.setEmail(user.getEmail());
+		userDto.setUserId(user.getUserId());
 		
-		return new ResponseEntity<Map<String,String>>(map, HttpStatus.OK);
+		return new ResponseEntity<UserAutenticated>(new UserAutenticated(userDto, userToken), HttpStatus.OK);
 		
 	}
 	

@@ -1,6 +1,6 @@
 package br.com.caiocesar.expense.tracker.api.domain;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;

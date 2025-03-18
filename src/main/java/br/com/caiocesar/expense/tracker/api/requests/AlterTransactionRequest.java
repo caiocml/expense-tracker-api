@@ -2,9 +2,9 @@ package br.com.caiocesar.expense.tracker.api.requests;
 
 import java.time.LocalDateTime;
 
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.validation.constraints.NotNull;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.validation.constraints.NotNull;
 
 import br.com.caiocesar.expense.tracker.api.payment.InvoiceType;
 

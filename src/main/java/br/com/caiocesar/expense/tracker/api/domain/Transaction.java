@@ -3,7 +3,7 @@ package br.com.caiocesar.expense.tracker.api.domain;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 

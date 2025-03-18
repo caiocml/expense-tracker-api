@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.function.Consumer;
 
-import javax.validation.Valid;
+import jakarta.validation.Valid;
 
 import br.com.caiocesar.expense.tracker.api.domain.*;
 import org.springframework.beans.BeanUtils;
