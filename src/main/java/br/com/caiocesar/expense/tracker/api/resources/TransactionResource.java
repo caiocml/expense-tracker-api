@@ -17,6 +17,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Sort;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -115,14 +116,25 @@ public class TransactionResource extends GenericResource{
 	}
 	
 	@GetMapping("")
-	public ResponseEntity<?> getAllUserTransactions(@PathParam("size") Integer size ,@PathParam("page") Integer page){
+	public ResponseEntity<?> getAllUserTransactions(@PathParam("size") Integer size ,@PathParam("page") Integer page,
+													@PathParam("order") String direction){
 		User user = getSessionUser();
 
 		if(page == null)
 			page = 1;
 		if(size == null)
 			size = DEFAULT_SIZE;
-		Page<Transaction> search = transactionService.findPageable(size, page, user.getUserId());
+		if(direction == null)
+			direction = "asc";
+
+		Sort.Direction sortDirection;
+		if(direction.equalsIgnoreCase("desc")){
+			sortDirection = Sort.Direction.DESC;
+		}else{
+			sortDirection = Sort.Direction.ASC;
+		}
+
+		Page<Transaction> search = transactionService.findPageable(size, page, user.getUserId(), sortDirection);
 		
 		List<TransactionDTO> dtoList = new ArrayList<>();
 		Optional.ofNullable(search).ifPresent(e->{

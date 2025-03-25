@@ -82,11 +82,11 @@ public class  TransactionService {
 	}
 
 	
-	public Page<Transaction> findPageable(Integer size, Integer page, Integer userId) {
+	public Page<Transaction> findPageable(Integer size, Integer page, Integer userId, Direction direction) {
 		var sample = new Transaction();
 		sample.setUserId(userId);
 		
-		Pageable pageable = PageRequest.of(page - 1, size, Sort.by(Direction.ASC, "id"));
+		Pageable pageable = PageRequest.of(page - 1, size, Sort.by(direction, "id"));
 		
 		return transactionRespository.findAll(Example.of(sample), pageable);
 	}
