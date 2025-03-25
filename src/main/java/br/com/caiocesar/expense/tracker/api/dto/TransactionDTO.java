@@ -1,17 +1,17 @@
 package br.com.caiocesar.expense.tracker.api.dto;
 
-import java.math.BigDecimal;
-import java.time.LocalDateTime;
-
 import br.com.caiocesar.expense.tracker.api.domain.CreditDebit;
 import br.com.caiocesar.expense.tracker.api.domain.TransactionType;
+
+import java.math.BigDecimal;
+import java.time.LocalDate;
 
 public class TransactionDTO implements GenericDto{
 
 	private Integer id;
 	private BigDecimal amount;
 	private String note;
-	private LocalDateTime transactionDate;
+	private LocalDate transactionDate;
 	private PaymentTypeDTO paymentType;
 	private CreditDebit creditDebit;
 	private Integer paymentTypeId;
@@ -31,10 +31,10 @@ public class TransactionDTO implements GenericDto{
 	public void setNote(String note) {
 		this.note = note;
 	}
-	public LocalDateTime getTransactionDate() {
+	public LocalDate getTransactionDate() {
 		return transactionDate;
 	}
-	public void setTransactionDate(LocalDateTime transactionDate) {
+	public void setTransactionDate(LocalDate transactionDate) {
 		this.transactionDate = transactionDate;
 	}
 	public PaymentTypeDTO getPaymentType() {

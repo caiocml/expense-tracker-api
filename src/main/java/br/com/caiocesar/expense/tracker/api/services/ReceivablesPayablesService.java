@@ -57,7 +57,7 @@ public class ReceivablesPayablesService {
                 expirationDay = 1;
             }
 
-            LocalDateTime transactionDateAux = transaction.getTransactionDate();
+            LocalDate transactionDateAux = transaction.getTransactionDate();
             YearMonth yearMonth = YearMonth.from(transactionDateAux);
 
             yearMonth = yearMonth.plusMonths(i);

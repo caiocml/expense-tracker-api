@@ -1,37 +1,8 @@
 package br.com.caiocesar.expense.tracker.api.resources;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-
-import br.com.caiocesar.expense.tracker.api.dto.CategoryDTO;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.validation.Valid;
-import jakarta.websocket.server.PathParam;
-
-import org.springframework.beans.BeanUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
 import br.com.caiocesar.expense.tracker.api.domain.Transaction;
 import br.com.caiocesar.expense.tracker.api.domain.User;
+import br.com.caiocesar.expense.tracker.api.dto.CategoryDTO;
 import br.com.caiocesar.expense.tracker.api.dto.PaymentTypeDTO;
 import br.com.caiocesar.expense.tracker.api.dto.TransactionDTO;
 import br.com.caiocesar.expense.tracker.api.filters.AuthFilter;
@@ -40,6 +11,20 @@ import br.com.caiocesar.expense.tracker.api.requests.AlterTransactionRequest;
 import br.com.caiocesar.expense.tracker.api.responses.TransactionDTOResponse;
 import br.com.caiocesar.expense.tracker.api.responses.TransactionRelatoryPaginationResponse;
 import br.com.caiocesar.expense.tracker.api.services.TransactionService;
+import jakarta.validation.Valid;
+import jakarta.websocket.server.PathParam;
+import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.*;
+
+import java.time.LocalDate;
+import java.util.*;
 
 @RestController
 @RequestMapping("/transactions")
@@ -61,7 +46,7 @@ public class TransactionResource extends GenericResource{
 		transaction.setUserId(user.getUserId());
 		
 		if(transaction.getTransactionDate() == null)
-			transaction.setTransactionDate(LocalDateTime.now());
+			transaction.setTransactionDate(LocalDate.now());
 		
 		transaction = transactionService.save(transaction);
 		

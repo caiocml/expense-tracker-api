@@ -59,7 +59,7 @@ public class TransactionRepository {
 
 	
 	public Transaction create(Integer userId, Integer categoryId, BigDecimal amount, String note,
-							  LocalDateTime transactionDate) throws BusinessException {
+							  LocalDate transactionDate) throws BusinessException {
 		
 		Category category = categoryRepository.findByIdAndUserId(categoryId, userId);
 		

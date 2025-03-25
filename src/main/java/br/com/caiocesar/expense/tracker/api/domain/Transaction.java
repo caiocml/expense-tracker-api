@@ -1,9 +1,10 @@
 package br.com.caiocesar.expense.tracker.api.domain;
 
-import java.math.BigDecimal;
-import java.time.LocalDateTime;
-
 import jakarta.persistence.*;
+
+import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -31,7 +32,7 @@ public class Transaction {
 	
 	private String note;
 	
-	private LocalDateTime transactionDate;
+	private LocalDate transactionDate;
 	
 	@Column(name = "payment_type_id", nullable = false)
 	private Integer paymentTypeId;
@@ -74,7 +75,7 @@ public class Transaction {
 		
 	}
 
-	public Transaction(Integer userId, Integer categoryId, BigDecimal amount, String note, LocalDateTime transactionDate) {
+	public Transaction(Integer userId, Integer categoryId, BigDecimal amount, String note, LocalDate transactionDate) {
 		this.userId = userId;
 		this.categoryId = categoryId;
 		this.amount = amount;
@@ -122,11 +123,11 @@ public class Transaction {
 		this.note = note;
 	}
 
-	public LocalDateTime getTransactionDate() {
+	public LocalDate getTransactionDate() {
 		return transactionDate;
 	}
 
-	public void setTransactionDate(LocalDateTime transactionDate) {
+	public void setTransactionDate(LocalDate transactionDate) {
 		this.transactionDate = transactionDate;
 	}
 
