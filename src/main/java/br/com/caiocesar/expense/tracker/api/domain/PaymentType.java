@@ -32,6 +32,21 @@ public class PaymentType {
 	@OneToMany(mappedBy = "paymentType", fetch = FetchType.LAZY)
 	private List<Transaction> transactions;
 
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "method")
+	private PaymentMethod method;
+
+	@Column(name = "method", insertable = false, updatable = false)
+	private Integer methodId;
+
+	public PaymentMethod getMethod() {
+		return method;
+	}
+
+	public void setMethod(PaymentMethod method) {
+		this.method = method;
+	}
+
 	public Integer getId() {
 		return id;
 	}
@@ -135,5 +150,13 @@ public class PaymentType {
 
     public void setDaysToCloseInvoice(Integer daysToCloseInvoice) {
         this.daysToCloseInvoice = daysToCloseInvoice;
+    }
+
+    public Integer getMethodId() {
+        return methodId;
+    }
+
+    public void setMethodId(Integer methodId) {
+        this.methodId = methodId;
     }
 }

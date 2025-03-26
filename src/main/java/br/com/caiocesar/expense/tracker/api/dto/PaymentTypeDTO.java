@@ -1,5 +1,6 @@
 package br.com.caiocesar.expense.tracker.api.dto;
 
+
 public class PaymentTypeDTO implements GenericDto{
 
 	private Integer id;
@@ -13,6 +14,7 @@ public class PaymentTypeDTO implements GenericDto{
 	private Integer userId;
 	private Integer expirationDay;
 	private Integer daysToCloseInvoice;
+	private Integer methodId;
 
 
 	public Integer getId() {
@@ -85,5 +87,13 @@ public class PaymentTypeDTO implements GenericDto{
 
     public void setDaysToCloseInvoice(Integer daysToCloseInvoice) {
         this.daysToCloseInvoice = daysToCloseInvoice;
+    }
+
+    public Integer getMethodId() {
+        return methodId;
+    }
+
+    public void setMethodId(Integer methodId) {
+        this.methodId = methodId;
     }
 }
